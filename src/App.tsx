@@ -17,8 +17,26 @@ import {
   X
 } from 'lucide-react';
 
+import DashboardView from './components/DashboardView';
+import InventoryView from './components/InventoryView';
+import SalesView from './components/SalesView';
+import SuppliersView from './components/SuppliersView';
+import ReportsView from './components/ReportsView';
+
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'inventory' | 'sales' | 'suppliers' | 'reports'>('dashboard');
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'dashboard': return <DashboardView />;
+      case 'inventory': return <InventoryView />;
+      case 'sales': return <SalesView />;
+      case 'suppliers': return <SuppliersView />;
+      case 'reports': return <ReportsView />;
+      default: return <DashboardView />;
+    }
+  };
 
   return (
     <div id="app-container" className="h-screen flex bg-[#F8FAFC] font-sans text-[#334155] overflow-hidden">
@@ -47,23 +65,38 @@ export default function App() {
           </button>
         </div>
         <nav id="nav-menu" className="p-3 flex-1 space-y-1">
-          <div className="bg-blue-600/10 text-blue-400 p-2 rounded-md flex items-center gap-3 text-xs font-semibold cursor-pointer">
+          <div 
+            className={`p-2 rounded-md flex items-center gap-3 text-xs font-semibold cursor-pointer ${activeTab === 'dashboard' ? 'bg-blue-600/10 text-blue-400' : 'hover:bg-slate-800'}`}
+            onClick={() => { setActiveTab('dashboard'); setSidebarOpen(false); }}
+          >
             <LayoutDashboard size={16} />
             Tableau de bord
           </div>
-          <div className="p-2 rounded-md hover:bg-slate-800 transition-colors flex items-center gap-3 text-xs font-medium cursor-pointer">
+          <div
+            className={`p-2 rounded-md flex items-center gap-3 text-xs font-medium cursor-pointer ${activeTab === 'inventory' ? 'bg-blue-600/10 text-blue-400' : 'hover:bg-slate-800'}`}
+            onClick={() => { setActiveTab('inventory'); setSidebarOpen(false); }}
+          >
             <Package size={16} />
             Inventaire
           </div>
-          <div className="p-2 rounded-md hover:bg-slate-800 transition-colors flex items-center gap-3 text-xs font-medium cursor-pointer">
+          <div
+            className={`p-2 rounded-md flex items-center gap-3 text-xs font-medium cursor-pointer ${activeTab === 'sales' ? 'bg-blue-600/10 text-blue-400' : 'hover:bg-slate-800'}`}
+            onClick={() => { setActiveTab('sales'); setSidebarOpen(false); }}
+          >
             <ShoppingCart size={16} />
             Ventes & Caisse
           </div>
-          <div className="p-2 rounded-md hover:bg-slate-800 transition-colors flex items-center gap-3 text-xs font-medium cursor-pointer">
+          <div
+            className={`p-2 rounded-md flex items-center gap-3 text-xs font-medium cursor-pointer ${activeTab === 'suppliers' ? 'bg-blue-600/10 text-blue-400' : 'hover:bg-slate-800'}`}
+            onClick={() => { setActiveTab('suppliers'); setSidebarOpen(false); }}
+          >
             <Users size={16} />
             Fournisseurs
           </div>
-          <div className="p-2 rounded-md hover:bg-slate-800 transition-colors flex items-center gap-3 text-xs font-medium cursor-pointer">
+          <div
+            className={`p-2 rounded-md flex items-center gap-3 text-xs font-medium cursor-pointer ${activeTab === 'reports' ? 'bg-blue-600/10 text-blue-400' : 'hover:bg-slate-800'}`}
+            onClick={() => { setActiveTab('reports'); setSidebarOpen(false); }}
+          >
             <BarChart3 size={16} />
             Rapports
           </div>
@@ -76,7 +109,7 @@ export default function App() {
             <button className="md:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-lg" onClick={() => setSidebarOpen(true)}>
               <Menu size={20} />
             </button>
-            <h1 className="text-sm font-semibold text-slate-800">Vue d'ensemble</h1>
+            <h1 className="text-sm font-semibold text-slate-800 capitalize">{activeTab}</h1>
           </div>
           <div id="header-tools" className="flex items-center gap-2 md:gap-4">
             <div className="relative">
@@ -95,32 +128,7 @@ export default function App() {
         </header>
 
         <div id="content-grid" className="p-4 md:p-6 space-y-6 overflow-y-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-              <p className="text-xs font-medium text-slate-500 mb-1">Produits Totaux</p>
-              <div className="flex items-end justify-between">
-                <span className="text-2xl font-bold text-slate-800">142</span>
-              </div>
-            </div>
-            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-              <p className="text-xs font-medium text-slate-500 mb-1">Stock Faible</p>
-              <div className="flex items-end justify-between">
-                <span className="text-2xl font-bold text-orange-600">08</span>
-              </div>
-            </div>
-            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-              <p className="text-xs font-medium text-slate-500 mb-1">Ventes du Jour</p>
-              <div className="flex items-end justify-between">
-                <span className="text-2xl font-bold text-slate-800">45</span>
-              </div>
-            </div>
-            <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-              <p className="text-xs font-medium text-slate-500 mb-1">Valeur Stock</p>
-              <div className="flex items-end justify-between">
-                <span className="text-2xl font-bold text-slate-800">4.8k €</span>
-              </div>
-            </div>
-          </div>
+          {renderContent()}
         </div>
       </main>
     </div>
