@@ -1,0 +1,6 @@
+{
+  "name": "Cafeteria Stock Manager",
+  "description": "A comprehensive inventory management system for cafeteria stock tracking, sales, and reporting.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
